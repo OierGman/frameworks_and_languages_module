@@ -15,33 +15,57 @@ Company TechStack
 -----------------
 
 * KaraKara tech stack
-    *  python, typescript, sanic, hyperapp, mqtt, ffmpeg
+    *  python, typescript, sanic, react, mqtt, ffmpeg, docker compose
 * [How to OVER Engineer a Website // What is a Tech Stack?](https://www.youtube.com/watch?v=Sxxw3qtb3_g) YouTube 11min FireShip
     * Talks though all the tech for client, server, ci, containers and then suggests a cutdown concept
     * [stackshare.io/stacks](https://stackshare.io/stacks) - Popular Tech Stacks: The open source tools and SaaS behind popular tech companies
         * todo: find another site - stackshare is an ad-ridden mess
-* Companies often list their tech stack in job descriptions
-    * e.g. [MultiVerse Careers](https://www.multiverse.io/en-GB/careers) look for 'Software Engineers'
-        * Elixir, Phoenix, Postgres, LiveView, Elm, Docker, Terraform & AWS
+* Companies often list their tech stack in job descriptions e.g:
+    * > Elixir, React, LiveView, Typescript, PostgreSQL, GraphQL, RabbitMQ and genAI, hosted on AWS
+        * [MultiVerse Careers](https://www.multiverse.io/en-GB/careers) 'Software Engineer - Remote (UK), Hybrid or Office Based' Nov 19th 2023
+        
 
-TASK: Using stackshare.io, find a company and find some technologies in it's tech stack
+### Investigate companies tech stack (20min)
+* TASK: Using https://stackshare.io/stacks, 
+    * Find 3 companies
+        * Identify 2 technologies you're aware of
+        * Identify 1 technology you are not away of - find out about it - what is it for?
+* Note: This site has a login-wall - let's get round that ...
+    * Bring up browser development tools `F12` 
+    * Set the modal to `display: none;`
+    * Remove the `filter: blur` from the top level `div`
+        * `<div data-testid="body" id="wrap" style="filter: blur(4px);">`
 
 
 Server or Client?
 ----------------
 
-This module has shown one paradgime REST api with single page webapp client
-There are alternatives
+This module has shown one paradigm: a REST api with single page webapp client (Single Page Application - SPA)
+There are alternatives to the SPA pattern.
+In fact - many people hate SPA's.
+* [Why does everyone "suddenly" hate Single Page Apps?](https://begin.com/blog/posts/2023-02-21-why-does-everyone-suddenly-hate-single-page-apps)
+But we have to know why the SPA pattern is problematic.
+* [The case for frameworks](https://seldo.com/posts/the_case_for_frameworks)
 
-* [Everything I wish I knew before moving 50,000 lines of code to React Server Components](https://www.mux.com/blog/what-are-react-server-components)
+* Mux.com: [Everything I wish I knew before moving 50,000 lines of code to React Server Components](https://www.mux.com/blog/what-are-react-server-components) July 2023 - Engineering Blog
     * > React Server Components is to understand what problem they’re solving. So let’s start there.
+    * client-side rendering (CSR) or single-page applications (SPA)
+    * server-side rendering (SSR) and static site generation (SSG)
+    * (In a single file we can use) Server Components and Client Components, respectively. Because we can be explicit about where our code runs, we can send less JavaScript to the client
+    * Server Components can fetch data directly from within the component (e.g. database, queue, file-store). When that fetch is complete, Server Components can stream that data to the client.
+    * https://nextjs.org/
+
+
+Question: What is the problem server side rendering (SSR) is trying to solve.
 
 
 Serverless Architecture
 -----------------------
 
+Serverless architecture (also known as "serverless computing" or "function as a service", FaaS)
+
 * Not a framework - more of a methodology
-* You don't run your own http server - the provider does
+* You do not run/deploy a http server that runs 24/7 - you do not build/ship/run containers for your service. Means no deployment/hardware management
 * a cloud function == container with ram and disk state ready to go - ready to be deployed/run to any edge in the world
     * aws lambda
 * Pay per function execution
@@ -49,8 +73,15 @@ Serverless Architecture
 * No visitors/users == no idle server costs
 * Billions of visitors == fine (you just pay per function execution) Infinite(?) scaling!
 
-* https://www.twilio.com/docs/glossary/what-is-serverless-architecture
-* [Tutorial: Build a Hello World REST API with Lambda proxy integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html)
+* [Twilio Docs: (What is) Serverless Architecture](https://www.twilio.com/docs/glossary/what-is-serverless-architecture) 4min read
+    * (definition)
+    * Why Serverless Architecture?
+    * How does Serverless or FaaS Differ from PaaS?
+    * Who Should Use Serverless?
+* AWS: Amazon API Gateway: [Tutorial: Build a Hello World REST API with Lambda proxy integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-create-api-as-simple-proxy-for-lambda.html)
+    * Has examples of deployment and example `curl` GET/POST
+    * I would encourage you to create an "AWS Account" and have a play with this. (small payment required - I would love to have done this as part of the module, but I think cloud services belongs in another module)
+
 
 ### Edge rendering
 
@@ -83,22 +114,29 @@ Question: What problems is NoSQL trying to solve?
 GraphQL
 -------
 
-* Not a framework - query language for api's
+* Not a _framework_ - it's a query language for api's
 * https://www.howtographql.com/basics/1-graphql-is-the-better-rest/ page + (12min video)
+    * REST API's cannot keep up with rapidly changing requirements
+        * If you change your api - all your existing clients break and need updating at the same time - an utter utter pain
+    * > GraphQL was created to cope with the need for more flexibility and efficiency in client-server communication
+    * No more Over- and Under- fetching
+    * Rapid Product Iterations on the Frontend
+* A GraphQL Server could be configured/backed by multiple databases, rest APIs, or static files. One interface/endpoint is now explorable
 
-Question: When would you use GraphQL over REST? Is there a point in ever using REST?
-What problems is GraphQL tring to solve?
+Question 1: What problems is GraphQL tring to solve?
+Question 2: When would you use GraphQL over REST? Is there a point in ever using REST?
 
 
+You had to understand REST in order to understand what REST is trying to solve.
 
 
 IPFS + Blockchain hosting
 ----
 
-* [HTTP is obsolete. It's time for the distributed, permanent web](https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html)
-    * [[http]] has problems - this beautifully describes why
-    * HTTP servers need to be kept on all the time. When they go, all their data is inaccessible. The Web is centralised because of http/
-    * Could you host pages on Mars?
+* ipfs.io [HTTP is obsolete. It's time for the distributed, permanent web](https://ipfs.io/ipfs/QmNhFJjGcMPqpuYfxL62VVB9528NXqDNMFXiqN5bgFYiZ1/its-time-for-the-permanent-web.html)
+    * HTTP has problems - this beautifully describes why
+    * HTTP servers need to be kept on all the time. When they go, all their data is inaccessible. The Web is centralised because of HTTP.
+    * How would you browse the web on the Moon or Mars?
 * [Host your Website on the Blockchain, Permanently](https://medium.com/fullstacked/i-saved-60-per-year-forever-by-hosting-my-website-on-the-blockchain-6f7bf07d35d9) - How to host a simple website on Arweave’s perma-web
 * [Decentralizing your Website](https://towardsdatascience.com/decentralizing-your-website-f5bca765f9ed) - IPFS + ENS
 
@@ -153,6 +191,8 @@ shell:
 ```
 demo/
 ```
+(please use the `.gitignore` don't commit all the demo generated files to your repo)
+
 
 Question: When would you use static site generation?
 Question: What problem is static-site-generation trying to solve?
@@ -163,7 +203,7 @@ Server State Frameworks
 
 ### svelte
 * [Svelte](https://svelte.dev/)
-    * Server database and fontend linked - changed to db/state -> automatic frontend event
+    * Server database and frontend linked - changed to db/state -> automatic frontend event
     * [How to get rich as a solo software developer - The Ultimate Guide](https://youtu.be/A4_TFHzqAAg?si=Cib45aISEEEnGESl&t=243) 4min into the video, talks about tech stack and svelte example! WOW!
 ### Fusion
 * [Stl.Fusion](https://github.com/servicetitan/Stl.Fusion)
@@ -192,6 +232,7 @@ Server State Frameworks
 
 Question: What problem is the 'DREAM' pattern trying to solve?
 
+
 Other - TODO:
 ------------
 
@@ -217,6 +258,8 @@ Local First?
     * Merging data framework
 
 * [Push notifications are now supported cross-browser](https://web.dev/push-notifications-in-all-modern-browsers/)
+    * > now available in all three browser engines! 
+    * `serviceWorker` and `PushManager`
 
 
 
@@ -231,11 +274,15 @@ BlockChain Applications
 Question: What problems are blockchain applications trying to solve?
 
 
----
+Summary?
+--------
 
 Question: What technology today was the most interesting and why?
 
----
+
+
+Other Domains
+=============
 
 
 Mobile Frameworks
