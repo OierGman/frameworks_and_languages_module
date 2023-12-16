@@ -19,14 +19,14 @@ Company TechStack
 * [How to OVER Engineer a Website // What is a Tech Stack?](https://www.youtube.com/watch?v=Sxxw3qtb3_g) YouTube 11min FireShip
     * Talks though all the tech for client, server, ci, containers and then suggests a cutdown concept
     * [stackshare.io/stacks](https://stackshare.io/stacks) - Popular Tech Stacks: The open source tools and SaaS behind popular tech companies
-        * todo: find another site - stackshare is an ad-ridden mess
+        * stackshare is an ad-ridden mess of a site - see notes below
 * Companies often list their tech stack in job descriptions e.g:
     * > Elixir, React, LiveView, Typescript, PostgreSQL, GraphQL, RabbitMQ and genAI, hosted on AWS
         * [MultiVerse Careers](https://www.multiverse.io/en-GB/careers) 'Software Engineer - Remote (UK), Hybrid or Office Based' Nov 19th 2023
         
 
 ### Investigate companies tech stack (20min)
-* TASK: Using https://stackshare.io/stacks, 
+* TASK: Using https://stackshare.io/stacks
     * Find 3 companies
         * Identify 2 technologies you're aware of
         * Identify 1 technology you are not away of - find out about it - what is it for?
@@ -36,9 +36,11 @@ Company TechStack
     * Remove the `filter: blur` from the top level `div`
         * `<div data-testid="body" id="wrap" style="filter: blur(4px);">`
 
+Question: Cold call for some technologies
 
-Server or Client?
-----------------
+
+Server Rendering or Client Rendering?
+------------------------------------
 
 This module has shown one paradigm: a REST api with single page webapp client (Single Page Application - SPA)
 There are alternatives to the SPA pattern.
@@ -85,7 +87,7 @@ Serverless architecture (also known as "serverless computing" or "function as a 
 
 ### Edge rendering
 
-* vercel.com [Build your own web framework](https://vercel.com/blog/build-your-own-web-framework)
+* vercel.com [Build your own (React-based) web framework](https://vercel.com/blog/build-your-own-web-framework)
     * build your own web framework that also deploys to edge and serverless infrastructure? 
     * What features does a modern framework need to support, and how can we ensure that these features allow us to build a scalable, performant web application?
         * Static Files to statically render pages
@@ -121,7 +123,53 @@ GraphQL
     * > GraphQL was created to cope with the need for more flexibility and efficiency in client-server communication
     * No more Over- and Under- fetching
     * Rapid Product Iterations on the Frontend
+* https://www.contentful.com/blog/graphql-vs-rest-exploring-how-they-work/
+* [Why I Built A GraphQL Server For Spotify API](https://medium.com/@sitianliu_57680/why-i-built-a-graphql-server-for-spotify-api-4f516836e4ec)
+    * Spotify has a normalised REST API, but this takes many calls to different endpoints (under-fetch) to get the data needed for a homepage.
+* GraphQL is self-documenting and explorable
+    * (The queries are a little verbose, by hand. Normally you use an 'explorer' to get docs and schema)
+    * StackOverflow: [How to request the schema from a GraphQL service using curl?](https://stackoverflow.com/a/61468962/3356840)
 * A GraphQL Server could be configured/backed by multiple databases, rest APIs, or static files. One interface/endpoint is now explorable
+* SpaceX 
+    * v3 used to be REST based (2020)
+        * https://docs.spacexdata.com/#1a1acb6e-0f15-437b-ae16-dcabf24dec9f
+    * v4 graphql
+
+### Task: Have a go
+
+* [GraphQL via HTTP in five ways: cURL, Python, JavaScript, Ruby and PHP](https://www.contentful.com/blog/graphql-via-http-in-five-ways/)
+    *   ```bash
+        curl -g \
+        -X POST \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer 8c7dbd270cb98e83f9d8d57fb8a2ab7bac9d7501905fb013c69995ebf1b2a719" \
+        -d '{"query":"query{showCollection {items { title firstEpisodeDate lastEpisodeDate henshinMp4 { url }}}}"}' \
+        https://graphql.contentful.com/content/v1/spaces/mt0pmhki5db7
+        ```
+    *   ```bash
+        curl \
+            'https://swapi-graphql.netlify.app/.netlify/functions/index'
+            -H 'Content-Type: application/json' \
+            --data '{"query":"{ film(filmID: 1) { title } }"}'
+        ```
+* https://www.graphqlbin.com/
+    * use one of these open apis
+    * https://spacex-production.up.railway.app/
+        * `query {launchNext {id, details, launch_date_utc}}`
+    * https://swapi-graphql.netlify.app/.netlify/functions/index
+* https://studio.apollographql.com/public/SpaceX-pxxbxen/variant/current/home
+
+
+* Other examples
+    * https://developers.cloudflare.com/analytics/graphql-api/getting-started/execute-graphql-query/
+* Worth Noting ... 
+    * Bigger companies have what they call Graph API's because they are a single endpoint with types of obejcts, these are often graphs of data but are not GraphQL
+    * https://developers.facebook.com/docs/graph-api/overview
+    * https://learn.microsoft.com/en-us/graph/use-the-api
+* Fauna
+    * Multi modal database automatically created from GraphQL
+    * https://youtu.be/W2Z7fbCLSTw?si=K7-RODXlHB3OO-3p&t=507
+    
 
 Question 1: What problems is GraphQL tring to solve?
 Question 2: When would you use GraphQL over REST? Is there a point in ever using REST?
@@ -204,7 +252,7 @@ Server State Frameworks
 ### svelte
 * [Svelte](https://svelte.dev/)
     * Server database and frontend linked - changed to db/state -> automatic frontend event
-    * [How to get rich as a solo software developer - The Ultimate Guide](https://youtu.be/A4_TFHzqAAg?si=Cib45aISEEEnGESl&t=243) 4min into the video, talks about tech stack and svelte example! WOW!
+    * [How to get rich as a solo software developer - The Ultimate Guide](https://youtu.be/A4_TFHzqAAg?si=Cib45aISEEEnGESl&t=243) 4min into the video, talks about tech stack. Svelte and Firebase (document data update events)
 ### Fusion
 * [Stl.Fusion](https://github.com/servicetitan/Stl.Fusion)
     * > Fusion is a .NET library that implements Distributed REActive Memoization (DREAM) – a novel technique that gracefully solves a number of well-known problems
@@ -213,6 +261,7 @@ Server State Frameworks
     * [How Similar Is Fusion to SignalR?](https://medium.com/swlh/how-similar-is-stl-fusion-to-signalr-e751c14b70c3)
         * Modelling an application based on state changes that propagate to client
         * > the only end result of your actions is that the client-side state (of every client) becomes consistent with the server-side state!
+* [.NET Blazor](https://dusted.codes/dotnet-blazor) Opinion Nov 2023
 ### Phoenix LiveView (Elixir)
 * [Phoenix.LiveView behaviour](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html) 
     * > LiveView provides rich, real-time user experiences with server-rendered HTML
@@ -236,16 +285,18 @@ Question: What problem is the 'DREAM' pattern trying to solve?
 Other - TODO:
 ------------
 
-Google
-https://flutter.dev/
-> Deploy to multiple devices from a single codebase: mobile, web, desktop, and embedded devices.
-> Flutter code compiles to ARM or Intel machine code as well as JavaScript, for fast performance on any device.
+* Google [Flutter](https://flutter.dev/)
+    * > Deploy to multiple devices from a single codebase: mobile, web, desktop, and embedded devices.
+    * > Flutter code compiles to ARM or Intel machine code as well as JavaScript, for fast performance on any device.
 
 
 Cloud First Frameworks?
 -----
 
-https://www.winglang.io/
+* https://www.winglang.io/
+    * Modern cloud apps need to be deployed. Deployment is complex and your application wont function without it. So could it be considered that your application and how it's run on the cloud are the same thing? if so, we need a new language/framework?
+    * > Infrastructure and code in one language
+
 
 
 Local First?
@@ -266,10 +317,12 @@ Local First?
 BlockChain Applications
 -----------------------
 
-### HyperLedger
-* [introduction](https://hyperledger.github.io/composer/v0.19/introduction/introduction.html)
-    * HyperLedger Composer is an extensive, open development toolset and framework to make developing blockchain applications easier.
-    * [key-concepts]https://hyperledger.github.io/composer/v0.19/introduction/key-concepts.html
+### HyperLedger Fabric
+* A Blockchain Platform for the Enterprise
+* [hyperledger-fabric documentation](https://hyperledger-fabric.readthedocs.io/)
+    * > Fabric is the first distributed ledger platform to support smart contracts authored in general-purpose programming languages such as Java, Go and Node.js, rather than constrained domain-specific languages (DSL). 
+      > This means that most enterprises already have the skill set needed to develop smart contracts, and no additional training to learn a new language or DSL is needed.
+
 
 Question: What problems are blockchain applications trying to solve?
 
@@ -300,22 +353,28 @@ Game Frameworks
 
 * If you are writing the `main` method and calling it - its a library
 * If you are writing code that is called by other code - that is using a framework
-* engines are bigger suites of tools
+* Engines are bigger suites of tools
 
 * [what-is-the-difference-between-a-game-framework-and-a-game-engine](https://gamedev.stackexchange.com/questions/31772/what-is-the-difference-between-a-game-framework-and-a-game-engine)
 * Example
+    * [PyGame](https://en.wikipedia.org/wiki/Pygame)
+        * https://realpython.com/pygame-a-primer/#basic-pygame-program
+        * A library not a framework - if you implement the game loop - its not a framework
     * [LittleJS](https://killedbyapixel.github.io/LittleJS/docs/) - The Tiny JavaScript Game Engine That Can
         * notice how you place your code with a known object structure
         * [HelloWorld Example](https://github.com/calaldees/TeachProgramming/tree/master/teachprogramming/static/projects/game/frameworks/LittleJS)
             * copy `Makefile` and `index.html`
-    * [PyGame](https://en.wikipedia.org/wiki/Pygame)
-        * https://realpython.com/pygame-a-primer/#basic-pygame-program
-        * A library not a framework - if you implement the game loop - its not a framework
     * [melonjs.org](https://melonjs.org/)
+        * html5 game framework that utilises other tools (tiled, blender)
 
 
-Other Frameworks
-----------------
+Other Future Frameworks
+-----------------------
 
 * [Introducing Darwin: A framework for evolving decentralized web apps](https://evolutionary.arweave.dev/)
     * An Evolutionary App is a decentralized web application that evolves using a process of incentivized forking and a market-based governance mechanism that fuels the selection process.
+    * Incentivized Forking
+        * If over time a contribution is deemed worthy by users it would become the default/selected version . The core incentive here is that in the case of an app (imagine a rapidly growing decentralized Twitter) that may already have growing network effects, devs are able to leverage the system to build an improvement and they will receive a reward if the following are agreed upon by users of the app:
+            * The community deems their contribution to be a genuine improvement of the app.
+            * The tokens they minted for their contribution are seen to be reasonable.
+        * This effectively allows devs to acquire the existing user base.
