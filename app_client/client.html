@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<link id="favicon" rel="shortcut icon" type="image/png" href="data:image/png;base64,....==" />
+	<title>Assignment App</title>
+	<style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0; /* Light gray background */
+            color: #333;
+        }
+
+        #app {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            color: #1e272e; /* Dark blue-gray text color */
+        }
+
+        form {
+            margin-bottom: 20px;
+            background-color: #ffffff; /* White background for the form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+        }
+
+        input, button {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ced4da; /* Light gray border color for input elements */
+            border-radius: 4px;
+            background-color: #ecf0f1; /* Light gray background for input elements */
+            color: #333;
+        }
+
+        button {
+            background-color: #3498db; /* Blue button color */
+            color: #fff;
+            cursor: pointer;
+        }
+
+		button.add-button {
+    		width: 100%;
+    		background-color: #3498db;
+    		color: #fff;
+    		cursor: pointer;
+    		padding: 10px;
+    		border: none;
+    		border-radius: 4px;
+}
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff; /* White background for list items */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+        }
+
+        img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 10px;
+        }
+
+        button[data-action="delete"] {
+            background-color: #e74c3c; /* Red button color */
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+	<script type="importmap">
+		{
+		  "imports": {
+			"vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+		  }
+		}
+	</script>
+</head>
+<body>
+	<h1>Assignmnet App</h1>
+	<div id="app">
+
+		<h2>Items</h2>
+		<form @submit.prevent="addItem">
+            <input name="user_id" v-model="item.user_id" placeholder="username">
+            <input name="lat" v-model="item.lat" placeholder="lat">
+            <input name="lon" v-model="item.lon" placeholder="lon">
+            <input name="image" v-model="item.image" placeholder="http://placekitten.com/100/100">
+            <input name="keywords" v-model="item.keywords" placeholder="keywords">
+            <input name="description" v-model="item.description" placeholder="description">
+            <button class="add-button" data-action="addItem">ADD</button>
+        </form>
+
+        <h2>Responses</h2>
+        <ul>
+			<li>
+				<span>User</span>
+				<span>Lat</span>
+				<span>Lon</span>
+				<span>Image</span>
+				<span>Keyword</span>
+				<span>Desc</span>
+				<span></span>
+				<span></span>
+			</li>
+            <li v-for="item in items">
+                <span data-field="user_id">{{item.user_id}}</span>
+                <span data-field="lat">{{item.lat}}</span>
+                <span data-field="lon">{{item.lon}}</span>
+                <img :src="item.image" alt="Item Image">
+                <span data-field="keywords">{{item.keywords}}</span>
+                <span data-field="description">{{item.description}}</span>
+                <button data-action="delete" @click="deleteItem(item.id)">Remove</button>
+            </li>
+        </ul>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	<script type="module">
+
+	import { createApp } from 'vue'
+
+	const DEFAULT_API = '/api/v1';  // default to current http(s)://currentHost:currentPort/api/v1'
+	const urlParams = new URLSearchParams(window.location.search);
+	const urlAPI = (urlParams.get('api') || DEFAULT_API).replace(/\/$/, '');  // Get api url (and remove trailing slash if present)
+
+	const RootComponent = {
+	  data() {
+		return {
+			item: {
+				id: '',
+				user_id: '',
+                lat: '',
+				lon: '',
+                image: '',
+				keywords: '',
+                description: '',
+			},
+			items: [],
+		}
+	  },
+	  created() {
+		this.clearInput()
+		this.updateItems()
+	  },
+	  components: {
+	  },
+	  methods: {
+		updateItems() {
+			fetch(`${urlAPI}/item`, {
+			})
+				.then(response => response.json())
+				.then(json => {this.items = json})
+			.catch(err => console.error(err))
+		},
+		clearInput() {
+			this.item = {...this.item, ...{
+				id: Math.random(),
+			}}
+		},
+		addItem() {
+			fetch(`${urlAPI}/item`, {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify(this.item),
+			})
+				.then(response => response.json())
+				.then(()=>this.clearInput())
+				.then(()=>this.updateItems())
+			.catch(err => console.error(err));
+
+            console.log(this.item);
+			console.log(this.item.image)
+			console.log(this.item.id)
+		},
+		deleteItem(id) {
+			fetch(`${urlAPI}/item/${id}`, {
+				method: 'DELETE',
+			})
+				.then(()=>this.updateItems())
+			.catch(err => console.error(err));
+		}
+	  },
+	}
+	const app = createApp(RootComponent)
+	const vm = app.mount('#app')
+</script>
+</body>
+</html>
